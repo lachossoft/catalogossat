@@ -18,12 +18,12 @@ const UsoCFDISchema = Schema({
         unique: false
     },
     PersonaFisica: {
-        type: String,
+        type: Boolean,
         required: true,
         unique: false
     },
     PersonaMoral: {
-        type: String,
+        type: Boolean,
         required: true,
         unique: false
     },

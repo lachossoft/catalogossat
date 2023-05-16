@@ -8,7 +8,7 @@ const ThereIs = async ( data, model, filter ) =>{
 
             modelfilter[filter] = data
 
-            let findData = await model.findOne( { modelfilter } ).exec()
+            let findData = await model.findOne( { ...modelfilter } ).exec()
 
             console.log(findData)
         
