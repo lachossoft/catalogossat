@@ -3,19 +3,9 @@ const RegimenFiscal = require('../model/catRegimenSAT.model');
 const { ThereIs } = require('../helpers/validationcontrollers.helper');
 
 const getAllUsoCFDI = async (req, res) => {
-    const { c_UsoCFDI, PersonaMoral, regimenFiscal } = req.params;
+    const { PersonaMoral, regimenFiscal } = req.params;
 
     try {
-        // Validar la existencia del campo c_UsoCFDI
-        const CFDIexists = await ThereIs(c_UsoCFDI, UsoCFDI, 'c_UsoCFDI');
-        
-        if (!CFDIexists) {
-            return res.status(404).send({
-                status: 'Error',
-                message: 'El c_UsoCFDI no existe'
-            });
-        }
-
         // Validar la existencia del campo regimenFiscal
         const Regimenexists = await ThereIs(regimenFiscal, RegimenFiscal, 'c_RegimenFiscal');
 
@@ -25,32 +15,43 @@ const getAllUsoCFDI = async (req, res) => {
                 message: 'El regimenFiscal no existe'
             });
         }
-        const usocfdi = await UsoCFDI.findOne({ c_UsoCFDI });
+        
+        // Buscar los registros en UsoCFDI que coincidan con PersonaMoral
+        const usocfdi = await UsoCFDI.find({});
 
-        if (!usocfdi) {
+        if (usocfdi.length === 0) {
             return res.status(404).send({
                 status: 'Error',
-                message: 'No se encontró el registro de usocfdi solicitado'
+                message: 'No se encontraron registros de usocfdi solicitados'
             });
         }
 
-        // Buscar los registros en catRegimenSat que coincidan con PersonaMoral
-        const regimenFiscalesPersonaMoral = await RegimenFiscal.find({ Moral:PersonaMoral });
+        // Buscar los registros en catRegimenSat que coincidan con c_RegimenFiscal y PersonaMoral
+        const regimenFiscales = await RegimenFiscal.find({ c_RegimenFiscal: regimenFiscal, Moral: PersonaMoral });
 
-        // Obtener los códigos de régimen fiscal del campo RegimenFiscalReceptor
-        const codigosRegimenFiscal = usocfdi.RegimenFiscalReceptor.split(',').map((codigo) => codigo.trim());
+        if (regimenFiscales.length === 0) {
+            return res.status(404).send({
+                status: 'Error',
+                message: 'Este regimen no aplica para la persona especificada'
+            });
+        }
 
-        // Filtrar los registros de catRegimenSat que coincidan con los códigos obtenidos y PersonaMoral
-        const regimenFiscales = regimenFiscalesPersonaMoral.filter((regimen) => codigosRegimenFiscal.includes(regimen.c_RegimenFiscal));
+        const filteredUsoCFDI = [];
+
+        for (const usocfdiItem of usocfdi) {
+            const codigosRegimenFiscal = usocfdiItem.RegimenFiscalReceptor.split(',').map((codigo) => codigo.trim());
+            if (codigosRegimenFiscal.includes(regimenFiscal)) {
+                filteredUsoCFDI.push({
+                    c_UsoCFDI: usocfdiItem.c_UsoCFDI,
+                    Descripcion: usocfdiItem.Descripcion
+                });
+            }
+        }
 
         return res.status(200).send({
             status: 'Ok',
-            message: 'Se encontró el registro de usocfdi solicitado',
-            data: {
-                c_UsoCFDI: usocfdi.c_UsoCFDI,
-                Descripcion: usocfdi.Descripcion,
-                regimenFiscal: regimenFiscales.map((regimen) => regimen.c_RegimenFiscal)
-            }
+            message: 'Se encontraron los registros de usocfdi solicitados',
+            data: filteredUsoCFDI
         });
     } catch (error) {
         return res.status(500).send({

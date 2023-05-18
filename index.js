@@ -32,6 +32,9 @@ app.use('/api/catPeriocidad', require('./routes/periocidad.routes'));
 //usoCFDI
 app.use('/api/catUsoCFDI', require('./routes/usocfdi.routes'));
 
+//codigoPostal
+app.use('/api/codigoPostal', require('./routes/codigopostal.routes'));
+
 dbConection()
 
 app.listen( process.env.PORT | 3000, ()=> console.log(`Servidor en linea por el puerto ${ process.env.PORT }`))
