@@ -15,7 +15,6 @@ const getAllUsoCFDI = async (req, res) => {
                 message: 'El regimenFiscal no existe'
             });
         }
-        
         // Buscar los registros en UsoCFDI que coincidan con PersonaMoral
         const usocfdi = await UsoCFDI.find({});
 
