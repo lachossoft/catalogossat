@@ -12,7 +12,7 @@ const getAllUsoCFDI = async (req, res) => {
         if (!Regimenexists) {
             return res.status(404).send({
                 status: 'Error',
-                message: 'El regimenFiscal no existe'
+                message: 'El regimen fiscal no existe'
             });
         }
         // Buscar los registros en UsoCFDI que coincidan con PersonaMoral
@@ -21,7 +21,7 @@ const getAllUsoCFDI = async (req, res) => {
         if (usocfdi.length === 0) {
             return res.status(404).send({
                 status: 'Error',
-                message: 'No se encontraron registros de usocfdi solicitados'
+                message: 'No se encontraron registros del cfdi solicitados'
             });
         }
 
@@ -49,7 +49,7 @@ const getAllUsoCFDI = async (req, res) => {
 
         return res.status(200).send({
             status: 'Ok',
-            message: 'Se encontraron los registros de usocfdi solicitados',
+            message: 'Se encontraron los registros del cfdi solicitados',
             data: filteredUsoCFDI
         });
     } catch (error) {

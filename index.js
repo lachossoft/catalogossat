@@ -14,6 +14,9 @@ app.use(express.json())
 
 //zona de rutas
 
+//estatus
+app.use('/',require('./routes/status.routes'))
+
 //regimen fiscal
 app.use('/api/catSAT_Regimen',require('./routes/regimenfiscal.routes'))
 
@@ -37,4 +40,6 @@ app.use('/api/codigoPostal', require('./routes/codigopostal.routes'));
 
 dbConection()
 
-app.listen( process.env.PORT | 3000, ()=> console.log(`Servidor en linea por el puerto ${ process.env.PORT }`))
+const server = app.listen( process.env.PORT || '3001', ()=> console.log(`Servidor en linea por el puerto ${ process.env.PORT }`))
+
+module.exports= { app, server }

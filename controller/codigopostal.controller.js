@@ -7,7 +7,7 @@ const Pais = require('../model/catPais.model');
 const Colonia = require('../model/catColonia.model');
 
 const getCodigoPostal = async (req, res) => {
-    const { codigoPostal,c_pais } = req.params;
+    const { codigoPostal, c_pais } = req.params;
 
     try {
         // Buscar el código postal en la base de datos
@@ -46,7 +46,7 @@ const getCodigoPostal = async (req, res) => {
             });
         }
 
-        if(c_PaisEstado!=c_pais){
+        if (c_PaisEstado != c_pais) {
             return res.status(404).json({
                 status: 'Error',
                 message: 'El país no pertenece a este codigo postal',
@@ -71,7 +71,7 @@ const getCodigoPostal = async (req, res) => {
 
             if (!localidadExists) {
                 return res.status(404).json({
-                    status: 'Error',        
+                    status: 'Error',
                     message: 'La localidad no existe',
                 });
             }

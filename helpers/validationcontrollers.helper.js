@@ -28,7 +28,6 @@ const ThereIs = async ( data, model, filter ) =>{
         console.log(error.message)
         return true
     }
-
 }
 
 module.exports = {
