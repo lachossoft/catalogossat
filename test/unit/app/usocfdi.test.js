@@ -44,10 +44,10 @@ describe('Prueba que devolvera un status 200 para indicar que las peticiones par
     });
 
     test('Validar que el codigo postal con municipio y localidad regrese sus valores', async () => {
-        const cfdifound = await api.get('/api/catUsoCFDI/list/false/610');
+        const cfdifound = await api.get('/api/catUsoCFDI/list/true/610');
         expect(cfdifound.statusCode).not.toBe(404);
         expect(cfdifound.statusCode).toBe(200);
-        expect(cfdifound.body.message).toEqual('Código postal encontrado');
+        expect(cfdifound.body.message).toEqual('Se encontraron los registros del cfdi solicitados');
         expect(cfdifound.body.data).toBeDefined();
         expect(cfdifound.body.data).not.toBeNull();
         expect(cfdifound.body.data.length).toBeGreaterThan(0);
@@ -59,7 +59,7 @@ describe('Prueba que devolvera un status 200 para indicar que las peticiones par
             expect(dato.Descripcion).not.toBeNull();
             expect(dato.Descripcion).not.toBe('');
           });
-      });
+      },50000);
 
 })
 

@@ -52,12 +52,12 @@ describe("Prueba que devolvera un status 200 para indicar que las peticiones par
     const response = await api.get("/api/catFormaPago/0A");
     expect(response.statusCode).toBe(500);
     expect(response.body.status).toEqual("Error");
-  
+
     const message = response.body.message;
     expect(message.length).toBe(1);
     expect(message[0].msg).toEqual("El campo c_formapago debe ser un número");
   });
-  
+
   test("Validar que traiga los datos correctos", async () => {
     const oneformapago = await api.get("/api/catFormaPago/01");
     expect(oneformapago.statusCode).not.toBe(404);
@@ -67,13 +67,11 @@ describe("Prueba que devolvera un status 200 para indicar que las peticiones par
     );
     expect(oneformapago.body.formaPago).toBeDefined();
     expect(oneformapago.body.formaPago).not.toBeNull();
-    oneformapago.body.formaPago.forEach((dato) => {
-      expect(dato.c_FormaPago).toBeDefined();
-      expect(dato.c_FormaPago).not.toBeNull();
-      expect(dato.c_FormaPago).not.toBe("");
-      expect(dato.Descripcion).toBeDefined();
-      expect(dato.Descripcion).not.toBeNull();
-      expect(dato.Descripcion).not.toBe("");
-    });
+    expect(oneformapago.body.formaPago.c_FormaPago).toBeDefined();
+    expect(oneformapago.body.formaPago.c_FormaPago).not.toBeNull();
+    expect(oneformapago.body.formaPago.c_FormaPago).not.toBe("");
+    expect(oneformapago.body.formaPago.Descripcion).toBeDefined();
+    expect(oneformapago.body.formaPago.Descripcion).not.toBeNull();
+    expect(oneformapago.body.formaPago.Descripcion).not.toBe("");
   }, 50000);
 });
