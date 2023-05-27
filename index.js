@@ -36,7 +36,10 @@ app.use('/api/catPeriocidad', require('./routes/periocidad.routes'));
 app.use('/api/catUsoCFDI', require('./routes/usocfdi.routes'));
 
 //codigoPostal
-app.use('/api/codigoPostal', require('./routes/codigopostal.routes'));
+app.use('/api/catCodigoPostal', require('./routes/codigopostal.routes'));
+
+//paises
+app.use('/api/catPaises', require('./routes/pais.routes'));
 
 dbConection()
 
