@@ -41,6 +41,9 @@ app.use('/api/catCodigoPostal', require('./routes/codigopostal.routes'));
 //paises
 app.use('/api/catPaises', require('./routes/pais.routes'));
 
+//claves
+app.use('/api/claves', require('./routes/claveproductos.routes'));
+
 dbConection()
 
 const server = app.listen( process.env.PORT || '3001', ()=> console.log(`Servidor en linea por el puerto ${ process.env.PORT }`))
