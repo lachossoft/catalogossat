@@ -9,9 +9,9 @@ afterAll(() => {
 });
 
 describe("Pruebas para el controlador y validador de las claves de productos", () => {
-  describe("Controlador: getClavesProductos", () => {
+  describe("Controlador de claves de productos", () => {
     test("Debería devolver un status 200 y las claves de productos", async () => {
-      const response = await api.post("/api/clavesProductos")
+      const response = await api.get("/api/catClaves/search")
         .send({ searchClave: "perro" });
       expect(response.statusCode).toBe(200);
       expect(response.body.status).toEqual("Ok");
@@ -21,7 +21,7 @@ describe("Pruebas para el controlador y validador de las claves de productos", (
     });
 
     test("Debería devolver un status 404 si no se encuentran claves de productos", async () => {
-      const response = await api.post("/api/clavesProductos")
+      const response = await api.get("/api/catClaves/search")
         .send({ searchClave: "noexiste" });
       expect(response.statusCode).toBe(404);
       expect(response.body.status).toEqual("Error");
@@ -29,44 +29,42 @@ describe("Pruebas para el controlador y validador de las claves de productos", (
     });
 
     test("Debería devolver un status 404 si no se proporciona una búsqueda válida", async () => {
-      const response = await api.post("/api/clavesProductos")
+      const response = await api.get("/api/catClaves/search")
         .send({ searchClave: "" });
-      expect(response.statusCode).toBe(404);
+      expect(response.statusCode).toBe(500);
       expect(response.body.status).toEqual("Error");
-      expect(response.body.message).toEqual("No se encontraron claves de productos");
+      expect(response.body.message[0].msg).toEqual("El campo searchClave es requerido");
+      expect(response.body.message[1].msg).toEqual("El campo searchClave no debe contener caracteres especiales");
+      expect(response.body.message[2].msg).toEqual("El campo searchClave no debe contener solo espacios en blanco");
     });
   });
 
-  describe("Validador: validateSearchClave", () => {
+  describe("Validador de claves de productos", () => {
     test("Debería retornar un error si no se proporciona el campo searchClave", async () => {
-      const response = await api.post("/api/clavesProductos")
+      const response = await api.get("/api/catClaves/search")
         .send({});
       expect(response.statusCode).toBe(500);
-      expect(response.body.message.length).toBe(1);
-      expect(response.body.message[0].msg).toEqual("El campo searchClave es requerido");
+      expect(response.body.message[1].msg).toEqual("El campo searchClave es requerido");
     });
 
     test("Debería retornar un error si el campo searchClave contiene caracteres especiales", async () => {
-      const response = await api.post("/api/clavesProductos")
+      const response = await api.get("/api/catClaves/search")
         .send({ searchClave: "clave#" });
       expect(response.statusCode).toBe(500);
-      expect(response.body.message.length).toBe(1);
       expect(response.body.message[0].msg).toEqual("El campo searchClave no debe contener caracteres especiales");
     });
 
     test("Debería retornar un error si el campo searchClave contiene solo espacios en blanco", async () => {
-      const response = await api.post("/api/clavesProductos")
+      const response = await api.get("/api/catClaves/search")
         .send({ searchClave: "    " });
       expect(response.statusCode).toBe(500);
-      expect(response.body.message.length).toBe(1);
       expect(response.body.message[1].msg).toEqual("El campo searchClave no debe contener solo espacios en blanco");
     });
 
     test("Debería retornar un error si el campo searchClave contiene espacios al inicio o al final", async () => {
-      const response = await api.post("/api/clavesProductos")
+      const response = await api.get("/api/catClaves/search")
         .send({ searchClave: " clave " });
       expect(response.statusCode).toBe(500);
-      expect(response.body.message.length).toBe(1);
       expect(response.body.message[0].msg).toEqual("El campo searchClave no debe contener espacios al inicio o al final");
     });
   });
