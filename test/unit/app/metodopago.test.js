@@ -9,7 +9,7 @@ afterAll(() => {
 });
 
 describe("Prueba que devolvera un status 200 para indicar que las peticiones para el controlador de los metodos de pago respondieron correctamente", () => {
-  test("Validar que traiga los valores completos y que no sea nulo", async () => {
+  test("Validar que retorne los valores completos y que no sea nulo", async () => {
     const metodopago = await api.get("/api/catMetodoPago/list");
     expect(metodopago.statusCode).toBe(200);
     expect(metodopago.body.message).toEqual(
@@ -27,6 +27,4 @@ describe("Prueba que devolvera un status 200 para indicar que las peticiones par
       expect(dato.Descripcion).not.toBe("");
     });
   }, 50000); // Aumenta el tiempo de espera a 50 segundos (50000 milisegundos)
-
-  
 });
