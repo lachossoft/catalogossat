@@ -55,7 +55,7 @@ describe("Prueba que devolvera un status 200 para indicar que las peticiones par
     );
   }, 50000);
 
-  test("Validar que el valor ismoralperson sea booleanozzzgit", async () => {
+  test("Validar que el valor ismoralperson sea booleano", async () => {
     const listRegimenFiscal = await api.get("/api/catSAT_Regimen/list/01");
     expect(listRegimenFiscal.statusCode).not.toBe(200);
     expect(listRegimenFiscal.statusCode).toBe(500);
