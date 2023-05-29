@@ -42,7 +42,10 @@ app.use('/api/catCodigoPostal', require('./routes/codigopostal.routes'));
 app.use('/api/catPaises', require('./routes/pais.routes'));
 
 //claves
-app.use('/api/claves', require('./routes/claveproductos.routes'));
+app.use('/api/catClaves', require('./routes/claveproductos.routes'));
+
+//unidades
+app.use('/api/catUnidades', require('./routes/unidades.routes'));
 
 dbConection()
 
